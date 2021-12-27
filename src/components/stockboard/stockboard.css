@@ -1,0 +1,67 @@
+table
+{
+    border-collapse:collapse;
+}
+
+table, td
+{
+    border-top: 4px solid white;
+    height: 40px;
+}
+
+td
+{
+    text-align:center;
+    color: white;
+    padding: 0px 2px;
+}
+
+th
+{
+    background-color: #3B4C5F;
+    color:white;
+    font-weight: lighter;
+    padding: 3px 2px;
+    height: 50px;
+}
+
+.normal {
+    background-color: #4B4B4B;
+}
+
+.stock-id {
+    background-color: #4B4B4B;
+}
+
+.stock-id:hover {
+    cursor:pointer;
+}
+
+.markup {
+    background-color: #FCD35D;
+}
+
+.markup:hover {
+    cursor: pointer;
+}
+
+.increase {
+    background-color: #FC5050;
+}
+
+.decrease {
+    background-color: #15AA6B;
+}
+
+.sortable-field {
+    background-color: #3B4C5F;
+    cursor: pointer;
+}
+
+.rocket {
+    background-color: #FC5050;
+}
+
+.plane {
+    background-color: #ff7200;
+}
