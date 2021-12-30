@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 import { Navigation } from './components/navigation/navigation.jsx';
 import { Stockboard } from './components/stockboard/stockboard.jsx';
+import { SearchBar } from './components/search_bar/search_bar.jsx';
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
           <Navigation />
           <main>
             <Routes>
-              <Route exact path='/' element={<Stockboard />} />
+              <Route exact path='/monitor' element={<Stockboard />} />
               <Route exact path='/stockboard' element={<Stockboard />} />
             </Routes>
           </main>

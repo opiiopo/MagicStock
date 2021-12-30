@@ -28,3 +28,20 @@ li a:hover:not(.active) {
 .active {
     background-color: #4CAF50;
 }
+
+#search-input {
+    margin-top: 5px;
+    height: 40px;
+    float: right;
+}
+
+#search-button{
+    margin-top: 5px;
+    padding: 0px 10px;
+    height: 40px;
+    float: right;
+    background-color: #3a94d0;
+    border-radius: 2px;
+    border: none;
+    color: #ffffff;
+}

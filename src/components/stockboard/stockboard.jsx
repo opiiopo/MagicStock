@@ -29,6 +29,7 @@ export const Stockboard = () => {
     const [sortBy, setSortBy] = useState({});
     const [isMobile, setIsMobile] = useState(false);
     const [lastSort, setLastSort] = useState('出现次数');
+    const [searchInput, setSearchInput] = useState('');
 
     const markStock = (e) => {
         setMarkup((markup) => {
@@ -37,6 +38,14 @@ export const Stockboard = () => {
             newMarkup[id] = !markup[id];
             return newMarkup;
         })
+    }
+
+    const markKeChuang = (code) => {
+        if (code.startsWith('300', 0) || code.startsWith('688', 0) || code.startsWith('8', 0)) {
+            return 'blue';
+        } else {
+            return 'normal';
+        }
     }
 
     const handleResize = () => {
@@ -95,65 +104,67 @@ export const Stockboard = () => {
     }, []);
 
     return (
-        <table>
-            <thead>
-            <tr>
-                <th>序号</th>
-                <th>代码</th>
-                <th>名称</th>
-                <th className='sortable-field' onClick={sortByField}>涨跌幅</th>
-                <th className='sortable-field' onClick={sortByField}>{isMobile ? '最新' : '最新价'}</th>
-                {!isMobile ? <th>最高</th> : null}
-                {!isMobile ? <th>最低</th> : null}
-                {!isMobile ? <th>今开</th> : null}
-                <th className='sortable-field' onClick={sortByField}>{isMobile ? '换手' : '换手率'}</th>
-                {!isMobile ? <th>昨日换手</th> : null}
-                <th className='sortable-field' onClick={sortByField}>量比</th>
-                {!isMobile ? <th className='sortable-field' onClick={sortByField}>动态市盈率</th> : null}
-                {!isMobile ? <th>昨日收盘</th> : null}
-                {!isMobile ? <th className='sortable-field' onClick={sortByField}>总市值</th> : null}
-                <th className='sortable-field' onClick={sortByField}>{isMobile ? '今开' : '今开涨幅'}</th>
-                <th className='sortable-field' onClick={sortByField}>出现次数</th>
-                {!isMobile ? <th>概念板块</th> : null}
-                <th className='sortable-field' onClick={sortByField}>三十秒涨幅</th>
-                <th className='sortable-field' onClick={sortByField}>上涨次数</th>
-            </tr>
-            </thead>
-            <tbody>
-            {data.map(
-                (record, index) => {
-                    return (
-                        <tr key={index}>
-                            <td className='normal'>{index}</td>
-                            <td className={markup[record.股票代码] ? 'markup' : 'stock-id'}
-                                id={record.股票代码}
-                                onClick={markStock}>
-                                {record.股票代码}
-                            </td>
-                            <td className={colorYiDong(record.三十秒涨幅)}>{record.股票名称}</td>
-                            <td style={colorCell(record.涨跌幅)}>{record.涨跌幅}</td>
-                            <td className='normal'>{record.最新价}</td>
-                            {!isMobile ? <td className='normal'>{record.最高}</td> : null}
-                            {!isMobile ? <td className='normal'>{record.最低}</td> : null}
-                            {!isMobile ? <td className='normal'>{record.今开}</td> : null}
-                            <td className='normal'>{record.换手率}</td>
-                            {!isMobile ? <td className='normal'>{turnover[record.股票代码]}</td> : null}
-                            <td className='normal'>{record.量比}</td>
-                            {!isMobile ? <td className='normal'>{record.动态市盈率}</td> : null}
-                            {!isMobile ? <td className='normal'>{record.昨日收盘}</td> : null}
-                            {!isMobile ? <td className='normal'>{record.总市值}</td> : null}
-                            <td style={colorCell(record.今开涨幅)}>{record.今开涨幅}</td>
-                            <td className='normal'>{record.出现次数}</td>
-                            {!isMobile ? <td className='normal'>{record.概念板块}</td> : null}
-                            {record.hasOwnProperty('三十秒涨幅') ? <td style={colorCell(record.三十秒涨幅)}>{record.三十秒涨幅}</td> :
-                                <td className='normal'>{}</td>}
-                            {record.hasOwnProperty('上涨次数') ? <td className='normal'>{record.上涨次数}</td> :
-                                <td className='normal'>{}</td>}
-                        </tr>
-                    );
-                }
-            )}
-            </tbody>
-        </table>
+        <div>
+            <table>
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>代码</th>
+                    <th>名称</th>
+                    <th className='sortable-field' onClick={sortByField}>涨跌幅</th>
+                    <th className='sortable-field' onClick={sortByField}>{isMobile ? '最新' : '最新价'}</th>
+                    {!isMobile ? <th>最高</th> : null}
+                    {!isMobile ? <th>最低</th> : null}
+                    {!isMobile ? <th>今开</th> : null}
+                    <th className='sortable-field' onClick={sortByField}>{isMobile ? '换手' : '换手率'}</th>
+                    {!isMobile ? <th>昨日换手</th> : null}
+                    <th className='sortable-field' onClick={sortByField}>量比</th>
+                    {!isMobile ? <th className='sortable-field' onClick={sortByField}>动态市盈率</th> : null}
+                    {!isMobile ? <th>昨日收盘</th> : null}
+                    {!isMobile ? <th className='sortable-field' onClick={sortByField}>总市值</th> : null}
+                    <th className='sortable-field' onClick={sortByField}>{isMobile ? '今开' : '今开涨幅'}</th>
+                    <th className='sortable-field' onClick={sortByField}>出现次数</th>
+                    {!isMobile ? <th>概念板块</th> : null}
+                    <th className='sortable-field' onClick={sortByField}>三十秒涨幅</th>
+                    <th className='sortable-field' onClick={sortByField}>上涨次数</th>
+                </tr>
+                </thead>
+                <tbody>
+                {data.map(
+                    (record, index) => {
+                        return (
+                            <tr key={record.股票代码}>
+                                <td className={markKeChuang(record.股票代码)}>{index}</td>
+                                <td className={markup[record.股票代码] ? 'markup' : 'stock-id'}
+                                    id={record.股票代码}
+                                    onClick={markStock}>
+                                    {record.股票代码}
+                                </td>
+                                <td className={colorYiDong(record.三十秒涨幅)}>{record.股票名称}</td>
+                                <td style={colorCell(record.涨跌幅)}>{record.涨跌幅}</td>
+                                <td className='normal'>{record.最新价}</td>
+                                {!isMobile ? <td className='normal'>{record.最高}</td> : null}
+                                {!isMobile ? <td className='normal'>{record.最低}</td> : null}
+                                {!isMobile ? <td className='normal'>{record.今开}</td> : null}
+                                <td className='normal'>{record.换手率}</td>
+                                {!isMobile ? <td className='normal'>{turnover[record.股票代码]}</td> : null}
+                                <td className='normal'>{record.量比}</td>
+                                {!isMobile ? <td className='normal'>{record.动态市盈率}</td> : null}
+                                {!isMobile ? <td className='normal'>{record.昨日收盘}</td> : null}
+                                {!isMobile ? <td className='normal'>{record.总市值}</td> : null}
+                                <td style={colorCell(record.今开涨幅)}>{record.今开涨幅}</td>
+                                <td className='normal'>{record.出现次数}</td>
+                                {!isMobile ? <td className='normal'>{record.概念板块}</td> : null}
+                                {record.hasOwnProperty('三十秒涨幅') ? <td style={colorCell(record.三十秒涨幅)}>{record.三十秒涨幅}</td> :
+                                    <td className='normal'>{}</td>}
+                                {record.hasOwnProperty('上涨次数') ? <td className='normal'>{record.上涨次数}</td> :
+                                    <td className='normal'>{}</td>}
+                            </tr>
+                        );
+                    }
+                )}
+                </tbody>
+            </table>
+        </div>
     );
 }
