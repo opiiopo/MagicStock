@@ -137,40 +137,47 @@ export const Stockboard = () => {
                 {data.map(
                     (record, index) => {
                             const textArray = searchText.split(' ');
-                            if (textArray.some(subString => record.概念板块.includes(subString))
-                            || textArray.some(subString => record.股票名称.includes(subString))
-                            || textArray.some(subString => record.股票代码.includes(subString))) {
-                                return (
-                                    <tr key={record.股票代码}>
-                                        <td className={markKeChuang(record.股票代码)}>{index}</td>
-                                        <td className={markup[record.股票代码] ? 'markup' : 'stock-id'}
-                                            id={record.股票代码}
-                                            onClick={markStock}>
-                                            {record.股票代码}
-                                        </td>
-                                        <td className={colorYiDong(record.三十秒涨幅)}>{record.股票名称}</td>
-                                        <td style={colorCell(record.涨跌幅)}>{record.涨跌幅}</td>
-                                        <td className='normal'>{record.最新价}</td>
-                                        {!isMobile ? <td className='normal'>{record.最高}</td> : null}
-                                        {!isMobile ? <td className='normal'>{record.最低}</td> : null}
-                                        {!isMobile ? <td className='normal'>{record.今开}</td> : null}
-                                        <td className='normal'>{record.换手率}</td>
-                                        {!isMobile ? <td className='normal'>{turnover[record.股票代码]}</td> : null}
-                                        <td className='normal'>{record.量比}</td>
-                                        {!isMobile ? <td className='normal'>{record.动态市盈率}</td> : null}
-                                        {!isMobile ? <td className='normal'>{record.昨日收盘}</td> : null}
-                                        {!isMobile ? <td className='normal'>{record.总市值}</td> : null}
-                                        <td style={colorCell(record.今开涨幅)}>{record.今开涨幅}</td>
-                                        <td className='normal'>{record.出现次数}</td>
-                                        <td className='normal'>{record.概念增加次数}</td>
-                                        {!isMobile ? <td className='normal'>{record.概念板块}</td> : null}
-                                        {record.hasOwnProperty('三十秒涨幅') ? <td style={colorCell(record.三十秒涨幅)}>{record.三十秒涨幅}</td> :
-                                            <td className='normal'>{}</td>}
-                                        {record.hasOwnProperty('上涨次数') ? <td className='normal'>{record.上涨次数}</td> :
-                                            <td className='normal'>{}</td>}
-                                    </tr>
-                                );
+                            const tr = (
+                                <tr key={record.股票代码}>
+                                    <td className={markKeChuang(record.股票代码)}>{index}</td>
+                                    <td className={markup[record.股票代码] ? 'markup' : 'stock-id'}
+                                        id={record.股票代码}
+                                        onClick={markStock}>
+                                        {record.股票代码}
+                                    </td>
+                                    <td className={colorYiDong(record.三十秒涨幅)}>{record.股票名称}</td>
+                                    <td style={colorCell(record.涨跌幅)}>{record.涨跌幅}</td>
+                                    <td className='normal'>{record.最新价}</td>
+                                    {!isMobile ? <td className='normal'>{record.最高}</td> : null}
+                                    {!isMobile ? <td className='normal'>{record.最低}</td> : null}
+                                    {!isMobile ? <td className='normal'>{record.今开}</td> : null}
+                                    <td className='normal'>{record.换手率}</td>
+                                    {!isMobile ? <td className='normal'>{turnover[record.股票代码]}</td> : null}
+                                    <td className='normal'>{record.量比}</td>
+                                    {!isMobile ? <td className='normal'>{record.动态市盈率}</td> : null}
+                                    {!isMobile ? <td className='normal'>{record.昨日收盘}</td> : null}
+                                    {!isMobile ? <td className='normal'>{record.总市值}</td> : null}
+                                    <td style={colorCell(record.今开涨幅)}>{record.今开涨幅}</td>
+                                    <td className='normal'>{record.出现次数}</td>
+                                    <td className='normal'>{record.概念增加次数}</td>
+                                    {!isMobile ? <td className='normal'>{record.概念板块}</td> : null}
+                                    {record.hasOwnProperty('三十秒涨幅') ? <td style={colorCell(record.三十秒涨幅)}>{record.三十秒涨幅}</td> :
+                                        <td className='normal'>{}</td>}
+                                    {record.hasOwnProperty('上涨次数') ? <td className='normal'>{record.上涨次数}</td> :
+                                        <td className='normal'>{}</td>}
+                                </tr>
+                            );
+
+                            if (textArray.includes('出现次数') && record.出现次数 > 0) {
+                                return tr;
+                            } else {
+                                if (textArray.some(subString => record.概念板块.includes(subString))
+                                    || textArray.some(subString => record.股票名称.includes(subString))
+                                    || textArray.some(subString => record.股票代码.includes(subString))) {
+                                    return tr;
+                                }
                             }
+
                             return null;
                     }
                 )}
