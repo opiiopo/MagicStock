@@ -137,7 +137,9 @@ export const Stockboard = () => {
                 {data.map(
                     (record, index) => {
                             const textArray = searchText.split(' ');
-                            if (textArray.some(subString => record.概念板块.includes(subString))) {
+                            if (textArray.some(subString => record.概念板块.includes(subString))
+                            || textArray.some(subString => record.股票名称.includes(subString))
+                            || textArray.some(subString => record.股票代码.includes(subString))) {
                                 return (
                                     <tr key={record.股票代码}>
                                         <td className={markKeChuang(record.股票代码)}>{index}</td>
