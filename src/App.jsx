@@ -13,7 +13,6 @@ function App() {
           <main>
             <Routes>
               <Route exact path='/monitor' element={<Stockboard />} />
-              <Route exact path='/stockboard' element={<Stockboard />} />
             </Routes>
           </main>
         </BrowserRouter>
