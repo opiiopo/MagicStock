@@ -106,6 +106,18 @@ export const Stockboard = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    useEffect(() => {
+        setMarkup((JSON.parse(window.localStorage.getItem('markup'))) || {});
+    }, []);
+
+    useEffect(() => {
+        window.localStorage.setItem('markup', JSON.stringify(markup));
+    }, [markup]);
+
+    useEffect(() => {
+        console.log(searchText);
+    }, [searchText])
+
     return (
         <div>
             <table>
@@ -170,6 +182,8 @@ export const Stockboard = () => {
 
                             if (textArray.includes('出现次数') && record.出现次数 > 0) {
                                 return tr;
+                            } else if(textArray.includes('关注') && markup[record.股票代码]) {
+                                return tr;
                             } else {
                                 if (textArray.some(subString => record.概念板块.includes(subString))
                                     || textArray.some(subString => record.股票名称.includes(subString))
@@ -177,7 +191,6 @@ export const Stockboard = () => {
                                     return tr;
                                 }
                             }
-
                             return null;
                     }
                 )}
