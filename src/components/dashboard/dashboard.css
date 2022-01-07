@@ -1,0 +1,6 @@
+#dashboard-container {
+    position: fixed;
+    top: 60px;
+    width: 100%;
+    height: auto;
+}

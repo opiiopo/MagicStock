@@ -184,6 +184,17 @@ export const Stockboard = () => {
                                 return tr;
                             } else if(textArray.includes('关注') && markup[record.股票代码]) {
                                 return tr;
+                            } else if (textArray.includes('预测')) {
+                                if (record.今开涨幅 > -1 && record.今开涨幅 < 1
+                                    && !(record.股票代码.startsWith('300', 0) || record.股票代码.startsWith('688', 0) || record.股票代码.startsWith('8', 0))
+                                    && record.量比 > 2 && record.出现次数 >= 2 && record.出现次数 <= 3) {
+                                    return tr;
+                                }
+                            } else if(textArray.includes('量价齐升')) {
+                                if (record.最新价 > record.昨日收盘 &&record.换手率 > turnover[record.股票代码] && record.今开涨幅 > -1 && record.今开涨幅 < 1
+                                    && !(record.股票代码.startsWith('300', 0) || record.股票代码.startsWith('688', 0) || record.股票代码.startsWith('8', 0))) {
+                                    return tr;
+                                }
                             } else {
                                 if (textArray.some(subString => record.概念板块.includes(subString))
                                     || textArray.some(subString => record.股票名称.includes(subString))
