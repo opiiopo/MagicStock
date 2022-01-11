@@ -4,6 +4,9 @@ import { selectText } from '../../components/navigation/navigationSlice';
 import './stockboard.css';
 import stockData from '../../data/data.json';
 import turnover from '../../data/turnover.json';
+import yidong from '../../data/yidong.json';
+import turnover_5_day from '../../data/turnover_5_day.json';
+import chg_5_day from '../../data/chg_5_day.json';
 
 const colorCell = (number) => {
     if (number > 0) {
@@ -68,7 +71,6 @@ export const Stockboard = () => {
     }
 
     useEffect(() => {
-        console.log(lastSort);
         let sortedData = [...stockData];
         sortedData  = sortedData.sort((a,b) => {
             if(sortBy[lastSort]) {
@@ -114,10 +116,6 @@ export const Stockboard = () => {
         window.localStorage.setItem('markup', JSON.stringify(markup));
     }, [markup]);
 
-    useEffect(() => {
-        console.log(searchText);
-    }, [searchText])
-
     return (
         <div>
             <table>
@@ -132,7 +130,8 @@ export const Stockboard = () => {
                     {!isMobile ? <th>最低</th> : null}
                     {!isMobile ? <th>今开</th> : null}
                     <th className='sortable-field' onClick={sortByField}>{isMobile ? '换手' : '换手率'}</th>
-                    {!isMobile ? <th>昨日换手</th> : null}
+                    {!isMobile ? <th>五日换手</th> : null}
+                    {!isMobile ? <th>五日涨幅</th> : null}
                     <th className='sortable-field' onClick={sortByField}>量比</th>
                     {!isMobile ? <th className='sortable-field' onClick={sortByField}>动态市盈率</th> : null}
                     {!isMobile ? <th>昨日收盘</th> : null}
@@ -164,7 +163,8 @@ export const Stockboard = () => {
                                     {!isMobile ? <td className='normal'>{record.最低}</td> : null}
                                     {!isMobile ? <td className='normal'>{record.今开}</td> : null}
                                     <td className='normal'>{record.换手率}</td>
-                                    {!isMobile ? <td className='normal'>{turnover[record.股票代码]}</td> : null}
+                                    {!isMobile ? <td className='normal'><pre>{turnover_5_day[record.股票代码]}</pre></td> : null}
+                                    {!isMobile ? <td className='normal'><pre>{chg_5_day[record.股票代码]}</pre></td> : null}
                                     <td className='normal'>{record.量比}</td>
                                     {!isMobile ? <td className='normal'>{record.动态市盈率}</td> : null}
                                     {!isMobile ? <td className='normal'>{record.昨日收盘}</td> : null}
@@ -195,7 +195,8 @@ export const Stockboard = () => {
                                     {!isMobile ? <td className='normal'>{record.最低}</td> : null}
                                     {!isMobile ? <td className='normal'>{record.今开}</td> : null}
                                     <td className='normal'>{record.换手率}</td>
-                                    {!isMobile ? <td className='normal'>{turnover[record.股票代码]}</td> : null}
+                                    {!isMobile ? <td className='normal'><pre>{turnover_5_day[record.股票代码]}</pre></td> : null}
+                                    {!isMobile ? <td className='normal'><pre>{chg_5_day[record.股票代码]}</pre></td> : null}
                                     <td className='normal'>{record.量比}</td>
                                     {!isMobile ? <td className='normal'>{record.动态市盈率}</td> : null}
                                     {!isMobile ? <td className='normal'>{record.昨日收盘}</td> : null}
@@ -214,7 +215,7 @@ export const Stockboard = () => {
                             } else if (textArray.includes('预测')) {
                                 if (record.今开涨幅 > -1 && record.今开涨幅 < 1
                                     && !(record.股票代码.startsWith('300', 0) || record.股票代码.startsWith('688', 0) || record.股票代码.startsWith('8', 0))
-                                    && record.量比 > 2 && record.出现次数 >= 2 && record.出现次数 <= 3) {
+                                    && record.出现次数 >= 2 && record.出现次数 <= 4) {
                                     return tr;
                                 }
                             } else if(textArray.includes('量价齐升')) {
@@ -222,6 +223,8 @@ export const Stockboard = () => {
                                     && !(record.股票代码.startsWith('300', 0) || record.股票代码.startsWith('688', 0) || record.股票代码.startsWith('8', 0))) {
                                     return tr;
                                 }
+                            } else if(textArray.includes('异动') && yidong.includes(record.股票代码)) {
+                                return tr;
                             } else {
                                 if (textArray.some(subString => record.概念板块.includes(subString))
                                     || textArray.some(subString => record.股票名称.includes(subString))
